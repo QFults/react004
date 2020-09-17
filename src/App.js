@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import GifContext from './utils/GifContext'
 import Form from './components/Form'
 import Card from './components/Card'
 import axios from 'axios'
@@ -35,13 +36,12 @@ const App = () => {
   return (
     <>
       <h1>GIPHY App</h1>
-      <Form
-        search={gifState.search}
-        handleInputChange={gifState.handleInputChange}
-        handleSearchGIPHY={gifState.handleSearchGIPHY} />
-      {
-        gifState.gif.title ? <Card gif={gifState.gif} /> : null
-      }
+      <GifContext.Provider value={gifState}>
+        <Form />
+        {
+          gifState.gif.title ? <Card /> : null
+        }
+      </GifContext.Provider>
     </>
   )
 }
