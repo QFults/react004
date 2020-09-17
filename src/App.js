@@ -1,48 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import GifContext from './utils/GifContext'
-import Form from './components/Form'
-import Card from './components/Card'
-import axios from 'axios'
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
 const App = () => {
-
-  const [gifState, setGifState] = useState({
-    search: '',
-    gif: {}
-  })
-
-  gifState.handleInputChange = event => {
-    setGifState({ ...gifState, [event.target.name]: event.target.value })
-  }
-
-  gifState.handleSearchGIPHY = event => {
-    event.preventDefault()
-    axios.get(`https://api.giphy.com/v1/gifs/search?api_key=so6QOTNdmWKPObKhaL11EhE7gGtpiiqG&q=${gifState.search}&limit=20&rating=g`)
-      .then(({ data }) => {
-        let gif = data.data[Math.floor(Math.random() * data.data.length)]
-        setGifState({ ...gifState, gif })
-      })
-  }
-
-  useEffect(() => {
-    axios.get('https://api.giphy.com/v1/gifs/search?api_key=so6QOTNdmWKPObKhaL11EhE7gGtpiiqG&q=cats&limit=20&rating=g')
-      .then(({ data }) => {
-        let gif = data.data[Math.floor(Math.random() * data.data.length)]
-        setGifState({ ...gifState, gif })
-      })
-      .catch(err => console.error(err))
-  }, [])
-
   return (
-    <>
-      <h1>GIPHY App</h1>
-      <GifContext.Provider value={gifState}>
-        <Form />
-        {
-          gifState.gif.title ? <Card /> : null
-        }
-      </GifContext.Provider>
-    </>
+    <Router>
+      <div>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/login">Login</Link>
+        </nav>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+      </Switch>
+      </div>
+    </Router>
   )
 }
 
